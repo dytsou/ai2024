@@ -1,6 +1,7 @@
 import os
 import cv2
 import glob
+import pathlib
 import numpy as np
 
 
@@ -19,7 +20,26 @@ def load_data_small():
     """
 
     # Begin your code (Part 1-1)
-    raise NotImplementedError("To be implemented")
+    curr_path = pathlib.Path(__file__).parent.resolve()
+    train_data_path = os.path.join(curr_path, "data/data_small/train/")
+    train_data_set = []
+    for file in os.listdir(os.path.join(train_data_path, "face")):
+        img = cv2.imread(os.path.join(train_data_path, "face", file))
+        train_data_set.append((img, 1))
+    for file in os.listdir(os.path.join(train_data_path, "non-face")):
+        img = cv2.imread(os.path.join(train_data_path, "non-face", file))
+        train_data_set.append((img, 0))
+    test_data_path = os.path.join(curr_path, "data/data_small/test")
+    test_data_set = []
+    for file in os.listdir(os.path.join(test_data_path, "face")):
+        if file.endswith(".pgm"):
+            img = cv2.imread(os.path.join(test_data_path, "face", file))
+            test_data_set.append((img, 1))
+    for file in os.listdir(os.path.join(test_data_path, "non-face")):
+        if file.endswith(".pgm"):
+            img = cv2.imread(os.path.join(test_data_path, "non-face", file))
+            test_data_set.append((img, 0))
+    dataset = (train_data_set, test_data_set)
     # End your code (Part 1-1)
     
     return dataset
