@@ -104,7 +104,18 @@ def load_data_FDDB(data_idx="01"):
         # Note that we have alreadly save the bounding box of faces into `face_box_list`, you can utilize it for non-face region cropping
         for i in range(num_faces):
             # Begin your code (Part 1-2)
-            raise NotImplementedError("To be implemented")
+            h, w = img_gray.shape
+            left_top = (np.random.randint(0, w - 19), np.random.randint(0, h - 19))
+            exist_face = False
+            for face_box in face_box_list:
+                if left_top[0] > face_box[0][0] and left_top[1] > face_box[0][1] and left_top[0] < face_box[1][0] and left_top[1] < face_box[1][1]:
+                    exist_face = True
+                    break 
+            if not exist_face:
+                img_crop = img_gray[left_top[1]:left_top[1] + 19, left_top[0]:left_top[0] + 19].copy()
+            else:
+                i -= 1
+                continue
             # End your code (Part 1-2)
 
             nonface_dataset.append((cv2.resize(img_crop, (19, 19)), 0))
