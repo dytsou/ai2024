@@ -27,7 +27,8 @@ def detect(dataPath, clf):
         for i in range(len(lines)):
             line = lines[i]
             if line.split()[0].endswith('.jpg'):
-              img_path = os.path.join(curr_path, 'data/detect', line.split()[0])
+              img_name = line.split()[0]
+              img_path = os.path.join(curr_path, 'data/detect', img_name)
               img = cv2.imread(img_path)
               img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
               if img is None:
@@ -48,6 +49,17 @@ def detect(dataPath, clf):
               i += items
               plt.imshow(img)
               plt.show()
+              save_path = os.path.join(curr_path, 'data/detect/result.jpg')
+              count = 1
+              while os.path.exists(save_path):
+                save_path = save_path.replace('.jpg', '_{}.jpg'.format(count))
+                count += 1
+              if cv2.imwrite(save_path, cv2.cvtColor(img, cv2.COLOR_BGR2RGB), [int(cv2.IMWRITE_JPEG_QUALITY), 90]):
+                print('Result saved')
+
+                
+              
+              
           
                 
                 
