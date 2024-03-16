@@ -25,21 +25,26 @@ def load_data_small():
     train_data_set = []
     for file in os.listdir(os.path.join(train_data_path, "face")):
         img = cv2.imread(os.path.join(train_data_path, "face", file))
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         train_data_set.append((img, 1))
     for file in os.listdir(os.path.join(train_data_path, "non-face")):
         img = cv2.imread(os.path.join(train_data_path, "non-face", file))
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         train_data_set.append((img, 0))
     test_data_path = os.path.join(curr_path, "data/data_small/test")
     test_data_set = []
     for file in os.listdir(os.path.join(test_data_path, "face")):
         if file.endswith(".pgm"):
             img = cv2.imread(os.path.join(test_data_path, "face", file))
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             test_data_set.append((img, 1))
     for file in os.listdir(os.path.join(test_data_path, "non-face")):
         if file.endswith(".pgm"):
             img = cv2.imread(os.path.join(test_data_path, "non-face", file))
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             test_data_set.append((img, 0))
     dataset = (train_data_set, test_data_set)
+    # print(dataset)
     # End your code (Part 1-1)
     
     return dataset
