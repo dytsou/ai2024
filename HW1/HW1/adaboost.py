@@ -28,11 +28,11 @@ class Adaboost:
         """
         print("Computing integral images")
         posNum, negNum = 0, 0
-        iis, labels = [], []
+        iis, labels = [], [] 
         for i in range(len(dataset)):
-            iis.append(utils.integralImage(dataset[i][0]))
+            iis.append(utils.integralImage(dataset[i][0])) 
             labels.append(dataset[i][1])
-            if dataset[i][1] == 1:
+            if dataset[i][1] == 1: # 1: face 0: non-face
                 posNum += 1
             else:
                 negNum += 1
@@ -76,7 +76,7 @@ class Adaboost:
             self.clfs.append(clf)
             print(
                 "Chose classifier: %s with accuracy: %f and alpha: %f"
-                % (str(clf), len(accuracy) - sum(accuracy), alpha)
+                % (str(clf), (len(accuracy) - sum(accuracy)) / len(accuracy), alpha)
             )
 
     def buildFeatures(self, imageShape):
@@ -89,7 +89,8 @@ class Adaboost:
         """
         height, width = imageShape
         features = []
-        for w in range(1, width + 1):
+        # run through all possible feature sizes
+        for w in range(1, width + 1): 
             for h in range(1, height + 1):
                 i = 0
                 while i + w < width:
@@ -161,7 +162,17 @@ class Adaboost:
             bestError: The error of the best classifer
         """
         # Begin your code (Part 2)
-        raise NotImplementedError("To be implemented")
+        bestClf = None
+        bestError = float("inf")
+        for i in range(len(features)):
+            clf = WeakClassifier(features[i])
+            error = 0
+            for j in range(len(iis)):
+                if clf.classify(iis[j]) != labels[j]:
+                    error += weights[j]
+            if error < bestError:
+                bestError = error
+                bestClf = clf
         # End your code (Part 2)
         return bestClf, bestError
 
