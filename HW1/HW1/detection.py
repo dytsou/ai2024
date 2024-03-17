@@ -22,6 +22,7 @@ def detect(dataPath, clf):
     # Begin your code (Part 4)
     curr_path = pathlib.Path(__file__).parent.absolute()
     dataPath = os.path.join(curr_path, dataPath)
+    dataPath = os.path.normpath(dataPath)
     with open(dataPath, 'r') as f:
         lines = f.readlines()
         for i in range(len(lines)):
@@ -50,6 +51,7 @@ def detect(dataPath, clf):
               plt.imshow(img)
               plt.show()
               save_path = os.path.join(curr_path, 'data/detect/result.jpg')
+              save_path = os.path.normpath(save_path)
               count = 1
               while os.path.exists(save_path):
                 save_path = save_path.replace('.jpg', '_{}.jpg'.format(count))

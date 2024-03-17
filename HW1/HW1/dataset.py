@@ -21,7 +21,8 @@ def load_data_small():
 
     # Begin your code (Part 1-1)
     curr_path = pathlib.Path(__file__).parent.resolve()
-    train_data_path = os.path.join(curr_path, "data/data_small/train/")
+    train_data_path = os.path.join(curr_path, "data/data_small/train")
+    train_data_path = os.path.normpath(train_data_path)
     train_data_set = []
     for file in os.listdir(os.path.join(train_data_path, "face")):
         img = cv2.imread(os.path.join(train_data_path, "face", file))
@@ -32,6 +33,7 @@ def load_data_small():
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         train_data_set.append((img, 0))
     test_data_path = os.path.join(curr_path, "data/data_small/test")
+    test_data_path = os.path.normpath(test_data_path)
     test_data_set = []
     for file in os.listdir(os.path.join(test_data_path, "face")):
         if file.endswith(".pgm"):
@@ -69,8 +71,10 @@ def load_data_FDDB(data_idx="01"):
             train_dataset: the training dataset
             test_dataset: the testing dataset
     """
-
-    with open("data/data_FDDB/FDDB-folds/FDDB-fold-{}-ellipseList.txt".format(data_idx)) as file:
+    curr_path = pathlib.Path(__file__).parent.resolve()
+    file_path = os.path.join(curr_path, "data/data_FDDB/FDDB-folds/FDDB-fold-{}-ellipseList.txt".format(data_idx))
+    file_path = os.path.normpath(file_path)
+    with open(file_path) as file:
         line_list = [line.rstrip() for line in file]
 
     # Set random seed for reproducing same image croping results
@@ -82,7 +86,9 @@ def load_data_FDDB(data_idx="01"):
     # Iterate through the .txt file
     # The detail .txt file structure can be seen in the README at https://vis-www.cs.umass.edu/fddb/
     while line_idx < len(line_list):
-        img_gray = cv2.imread(os.path.join("data/data_FDDB", line_list[line_idx] + ".jpg"), cv2.IMREAD_GRAYSCALE)
+        file_path = os.path.join(curr_path, 'data/data_FDDB/originalPics', line_list[line_idx] + '.jpg')
+        file_path = os.path.normpath(file_path)
+        img_gray = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
         num_faces = int(line_list[line_idx + 1])
 
         # Crop face region using the ground truth label
