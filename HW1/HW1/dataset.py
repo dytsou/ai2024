@@ -20,6 +20,11 @@ def load_data_small():
     """
 
     # Begin your code (Part 1-1)
+    """
+    First, read the images from the path: 'data/data_small'. Second, convert the images to grayscale.
+    Then, mark the images as face, using 1, or non-face, using 0, and store them in the dataset.
+    Finally, split the dataset into training and testing dataset.
+    """
     curr_path = pathlib.Path(__file__).parent.resolve()
     train_data_path = os.path.join(curr_path, "data/data_small/train")
     train_data_path = os.path.normpath(train_data_path)
@@ -115,6 +120,12 @@ def load_data_FDDB(data_idx="01"):
         # Note that we have alreadly save the bounding box of faces into `face_box_list`, you can utilize it for non-face region cropping
         for i in range(num_faces):
             # Begin your code (Part 1-2)
+            """
+            First, get the size of the image. Second, randomly crop the non-face region.
+            Then, determine whether the non-face region is overlap with the face region.
+            If not, crop and store the non-face region in the dataset. If yes, skip this 
+            non-face region.
+            """
             h, w = img_gray.shape
             left_top = (np.random.randint(0, w - 19), np.random.randint(0, h - 19))
             exist_face = False

@@ -20,6 +20,14 @@ def detect(dataPath, clf):
         No returns.
     """
     # Begin your code (Part 4)
+    """
+    First, read the images according to the path in the detectData.txt file.
+    Second, convert the images to grayscale. Next, determine the face area 
+    using the label in the detectData.txt file. Then, use the clf.classify()
+    function to detect the face and draw the box on the image. If the result is
+    true, draw the green box on the image. Otherwise, draw the red box on the image.
+    Finally, show the face detection results and save the result image.
+    """
     curr_path = pathlib.Path(__file__).parent.absolute()
     dataPath = os.path.join(curr_path, dataPath)
     dataPath = os.path.normpath(dataPath)
@@ -50,20 +58,10 @@ def detect(dataPath, clf):
               i += items
               plt.imshow(img)
               plt.show()
-              save_path = os.path.join(curr_path, 'data/detect/result.jpg')
+              save_path = os.path.join(curr_path, 'data/detect/result_{}.jpg'.format(img_name.split('.')[0]))
               save_path = os.path.normpath(save_path)
-              count = 1
-              while os.path.exists(save_path):
-                save_path = save_path.replace('.jpg', '_{}.jpg'.format(count))
-                count += 1
+              if os.path.exists(save_path):
+                  os.remove(save_path)
               if cv2.imwrite(save_path, cv2.cvtColor(img, cv2.COLOR_BGR2RGB), [int(cv2.IMWRITE_JPEG_QUALITY), 90]):
                 print('Result saved')
-
-                
-              
-              
-          
-                
-                
-                
     # End your code (Part 4)
