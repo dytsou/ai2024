@@ -134,7 +134,7 @@ def load_data_FDDB(data_idx="01"):
             left_top = (np.random.randint(0, w - 19), np.random.randint(0, h - 19))
             exist_face = False
             for face_box in face_box_list:
-                if left_top[0] > face_box[0][0] and left_top[1] > face_box[0][1] and left_top[0] < face_box[1][0] and left_top[1] < face_box[1][1]:
+                if left_top[0] > face_box[0][0] and left_top[1] > face_box[0][1] and left_top[0]+19 < face_box[1][0] and left_top[1]+19 < face_box[1][1]:
                     exist_face = True
                     break 
             if not exist_face:
