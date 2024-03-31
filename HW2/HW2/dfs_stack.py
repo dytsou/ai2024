@@ -5,18 +5,23 @@ edgeFile = 'edges.csv'
 def dfs(start, end):
     # Begin your code (Part 2)
     # Read the edges.csv file and store the graph as an adjacency list
-    start = str(start)
-    end = str(end)
+    # Begin your code (Part 1)
+    # Read the edges.csv file and store the graph as an adjacency list
+    with open(edgeFile, 'r') as file:
+        header = next(file).strip().split(',')  # Skip the header
     graph = {}
     with open(edgeFile, 'r') as file:
+        next(file)
         reader = csv.reader(file)
         for row in reader:
-            if row[0] not in graph:
-                graph[row[0]] = []
-            graph[row[0]].append(row[1])
-            if row[1] not in graph:
-                graph[row[1]] = []
-            graph[row[1]].append(row[0])
+            s = int(row[0])
+            t = int(row[1])
+            if s not in graph:
+                graph[s] = []
+            graph[s].append(t)
+            if t not in graph:
+                graph[t] = []
+            graph[t].append(s)
             
     # DFS
     visited = {}
