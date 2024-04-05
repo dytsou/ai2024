@@ -16,12 +16,13 @@ def dfs(start, end):
         for row in reader:
             s = int(row[0])
             t = int(row[1])
+            d = float(row[2])
             if s not in graph:
                 graph[s] = []
-            graph[s].append(t)
+            graph[s].append((t, d))
             if t not in graph:
                 graph[t] = []
-            graph[t].append(s)
+            graph[t].append((s, d))
             
     # DFS
     visited = {}
@@ -41,10 +42,10 @@ def dfs(start, end):
         current = stack.pop()
         if current == end:
             break
-        for neighbor in graph[current]:
+        for neighbor, weight in graph[current]:
             if not visited[neighbor]:
                 visited[neighbor] = True
-                distance[neighbor] = distance[current] + 1
+                distance[neighbor] = distance[current] + weight
                 parent[neighbor] = current
                 stack.append(neighbor)
     curr_path = []
