@@ -4,8 +4,13 @@ edgeFile = 'edges.csv'
 
 def dfs(start, end):
     # Begin your code (Part 2)
-    # Read the edges.csv file and store the graph as an adjacency list
-    # Begin your code (Part 1)
+    """
+    First, read the edges.csv file and store the graph as an adjacency list.
+    Then, implement the DFS algorithm by using a stack to find the path from
+    the start node to the end node. Finally, reconstruct the path from the
+    start node to the end node and return the path, total distance, and the
+    number of visited nodes.
+    """
     # Read the edges.csv file and store the graph as an adjacency list
     with open(edgeFile, 'r') as file:
         header = next(file).strip().split(',')  # Skip the header
@@ -28,7 +33,7 @@ def dfs(start, end):
     visited = {}
     distance = {}
     parent = {}
-    for node in graph:
+    for node in graph: # Initialize
         visited[node] = False
         distance[node] = float('inf')
         parent[node] = None
@@ -37,21 +42,21 @@ def dfs(start, end):
     visited[start] = True
     distance[start] = 0
     visited_times = 0
-    while stack:
+    while stack: # while stack is not empty
         visited_times += 1
         current = stack.pop()
         if current == end:
             break
-        pq = []
         for neighbor, weight in graph[current]:
             if not visited[neighbor]:
                 visited[neighbor] = True
                 distance[neighbor] = distance[current] + weight
                 parent[neighbor] = current
                 stack.append(neighbor)
+    # Reconstruct the path
     curr_path = []
     current = end   
-    while current is not None:
+    while current is not None: # Reaching the start node
         curr_path.insert(0, current)
         current = parent[current]
     return curr_path, distance[end], visited_times
