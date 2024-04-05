@@ -22,7 +22,7 @@ def dfs(start, end):
             graph[s].append((t, d))
             if t not in graph:
                 graph[t] = []
-            graph[t].append((s, d))
+            # graph[t].append((s, d))
             
     # DFS
     visited = {}
@@ -42,6 +42,7 @@ def dfs(start, end):
         current = stack.pop()
         if current == end:
             break
+        pq = []
         for neighbor, weight in graph[current]:
             if not visited[neighbor]:
                 visited[neighbor] = True

@@ -25,7 +25,7 @@ def astar_time(start, end):
             graph[s].append((t, time_converter(d, l)))
             if t not in graph:
                 graph[t] = []
-            graph[t].append((s, time_converter(d, l)))
+            # graph[t].append((s, time_converter(d, l)))
     
     with open(heuristicFile, 'r') as file:
         header = next(file).strip().split(',')
@@ -35,7 +35,10 @@ def astar_time(start, end):
         reader = csv.reader(file)
         for row in reader:
             node = int(row[0])
-            h = float(row[1])
+            if end == '1079387396': h = float(row[1])
+            elif end == '1737223506': h = float(row[2])
+            elif end == '8513026827': h = float(row[3])
+            else: h = 0
             heuristic[node] = h
     
     visited = {}
@@ -48,7 +51,7 @@ def astar_time(start, end):
     time[start] = 0
     visited_times = 0
     pq = []
-    heapq.heappush(pq, (heuristic[start], start))
+    heapq.heappush(pq, (0, start))
     while pq is not None:
         visited_times += 1
         current = heapq.heappop(pq)[1]
@@ -61,7 +64,7 @@ def astar_time(start, end):
             if time[current] + weight < time[neighbor]:
                 time[neighbor] = time[current] + weight
                 parent[neighbor] = current
-                heapq.heappush(pq, (time[neighbor] + heuristic[neighbor], neighbor)) 
+                heapq.heappush(pq, (time[neighbor] + heuristic[neighbor], neighbor))
     curr_path = []
     current = end
     while current is not None:

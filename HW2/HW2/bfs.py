@@ -20,7 +20,7 @@ def bfs(start, end):
             graph[s].append((t, d))
             if t not in graph:
                 graph[t] = []
-            graph[t].append((s, d))
+            # graph[t].append((s, d))
 
     # BFS 
     visited = {}
@@ -35,17 +35,17 @@ def bfs(start, end):
     visited[start] = True
     distance[start] = 0
     visited_times = 0
-    while queue is not None:
+    while queue:
         visited_times += 1
         current = queue.pop(0)
-        if current == end:
-            break
+        pq = []
         for neighbor, weight in graph[current]:
             if not visited[neighbor]:
                 visited[neighbor] = True
                 distance[neighbor] = distance[current] + weight
                 parent[neighbor] = current
                 queue.append(neighbor)
+                
     curr_path = []
     current = end
     while current is not None:

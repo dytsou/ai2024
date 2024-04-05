@@ -20,7 +20,7 @@ def ucs(start, end):
             graph[s].append((t, d))
             if t not in graph:
                 graph[t] = []
-            graph[t].append((s, d))
+            # graph[t].append((s, d))
 
     visited = {}
     distance = {}
@@ -33,7 +33,7 @@ def ucs(start, end):
     visited_times = 0
     pq = []
     heapq.heappush(pq, (0, start))
-    while pq is not None:
+    while pq:
         visited_times += 1
         current = heapq.heappop(pq)[1]
         if current == end:

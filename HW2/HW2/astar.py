@@ -21,7 +21,7 @@ def astar(start, end):
             graph[s].append((t, d))
             if t not in graph:
                 graph[t] = []
-            graph[t].append((s, d))
+            # graph[t].append((s, d))
     
     with open(heuristicFile, 'r') as file:
         header = next(file).strip().split(',')
@@ -31,7 +31,10 @@ def astar(start, end):
         reader = csv.reader(file)
         for row in reader:
             node = int(row[0])
-            h = float(row[1])
+            if end == '1079387396': h = float(row[1])
+            elif end == '1737223506': h = float(row[2])
+            elif end == '8513026827': h = float(row[3])
+            else: h = 0
             heuristic[node] = h 
             
     visited = {}
