@@ -139,7 +139,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
         for action in actions:
             candidate = self.minimax(gameState.getNextState(0, action), self.depth-1, 1)
             candidates.append((candidate, action))
-        print(candidates)
+        # print(candidates)
         return max(candidates)[1]
     
     def minimax(self, gameState, depth, agentIndex):
@@ -183,7 +183,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             candidate = self.alpha_beta(gameState.getNextState(0, action), self.depth-1, 1, alpha, beta)
             candidates.append((candidate, action))
             alpha = max(alpha, candidate)
-        print(candidates)
+        # print(candidates)
         return max(candidates)[1]
     
     def alpha_beta(self, gameState, depth, agentIndex, alpha, beta):
@@ -230,7 +230,36 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         legal moves.
         """
         # TODO: Begin your code (Part 3)
-        raise NotImplementedError("To be implemented")
+        actions = gameState.getLegalActions(0)
+        candidates = []
+        for action in actions:
+            candidate = self.expectimax(gameState.getNextState(0, action), self.depth-1, 1)
+            candidates.append((candidate, action))
+        # print(candidates)
+        return max(candidates)[1]
+    
+    def expectimax(self, gameState, depth, agentIndex):
+        if (depth == 0 and agentIndex == 0) or gameState.isWin() or gameState.isLose():
+            return self.evaluationFunction(gameState)
+        actions = gameState.getLegalActions(agentIndex)
+        if agentIndex == 0:
+            candidates = []
+            for action in actions:
+                candidate = self.expectimax(gameState.getNextState(agentIndex, action), depth-1, 1)
+                candidates.append(candidate)
+            return max(candidates)
+        elif agentIndex >= 1 and agentIndex < gameState.getNumAgents()-1:
+            candidates = []
+            for action in actions:
+                candidate = self.expectimax(gameState.getNextState(agentIndex, action), depth, agentIndex+1)
+                candidates.append(candidate)
+            return sum(candidates) / len(candidates) # average of all ghost actions
+        else:
+            candidates = []
+            for action in actions:
+                candidate = self.expectimax(gameState.getNextState(agentIndex, action), depth, 0)
+                candidates.append(candidate)
+            return sum(candidates) / len(candidates) # average of all ghost actions
         # End your code (Part 3)
 
 
