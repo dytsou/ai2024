@@ -279,13 +279,13 @@ def betterEvaluationFunction(currentGameState):
     ghostStates = currentGameState.getGhostStates()
     scaredTimes = [ghostState.scaredTimer for ghostState in ghostStates]
     minGhostDistance = min([manhattanDistance(pos, state.getPosition()) for state in ghostStates])
-    nearestFoodDistance = min([manhattanDistance(pos, food) for food in food.asList()])
+    avgFoodDistance = sum([manhattanDistance(pos, food) for food in food.asList()])/(len(food.asList())+1)
     score = currentGameState.getScore()
+    
     if minGhostDistance <= 1:
         return float('-inf')
-    if scaredTimes[0] > 0:
-        score += 10*scaredTimes[0]
-    return score + 5/(nearestFoodDistance+1) + 5/(minGhostDistance+1) - 5*len(food.asList()) - 2*len(capsules)
+    score += 10*scaredTimes[0]
+    return 1*score + 10.0/(avgFoodDistance+1) + 20.0/(minGhostDistance+1) - 5*len(food.asList()) - 2*len(capsules)
     # End your code (Part 4)
 
 # Abbreviation
