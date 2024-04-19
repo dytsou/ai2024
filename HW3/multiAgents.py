@@ -180,20 +180,20 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         alpha = float('-inf')
         beta = float('inf')
         for action in actions:
-            candidate = self.alpha_beta(gameState.getNextState(0, action), self.depth-1, 1, alpha, beta)
+            candidate = self.alphaBeta(gameState.getNextState(0, action), self.depth-1, 1, alpha, beta)
             candidates.append((candidate, action))
             alpha = max(alpha, candidate)
         # print(candidates)
         return max(candidates)[1]
     
-    def alpha_beta(self, gameState, depth, agentIndex, alpha, beta):
+    def alphaBeta(self, gameState, depth, agentIndex, alpha, beta):
         if (depth == 0 and agentIndex == 0) or gameState.isWin() or gameState.isLose():
             return self.evaluationFunction(gameState)
         actions = gameState.getLegalActions(agentIndex)
         if agentIndex == 0:
             v = float('-inf')
             for action in actions:
-                v = max(v, self.alpha_beta(gameState.getNextState(agentIndex, action), depth-1, 1, alpha, beta))
+                v = max(v, self.alphaBeta(gameState.getNextState(agentIndex, action), depth-1, 1, alpha, beta))
                 if v > beta:
                     return v
                 alpha = max(alpha, v)
@@ -201,7 +201,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         elif agentIndex >= 1 and agentIndex < gameState.getNumAgents()-1:
             v = float('inf')
             for action in actions:
-                v = min(v, self.alpha_beta(gameState.getNextState(agentIndex, action), depth, agentIndex+1, alpha, beta))
+                v = min(v, self.alphaBeta(gameState.getNextState(agentIndex, action), depth, agentIndex+1, alpha, beta))
                 if v < alpha:
                     return v
                 beta = min(beta, v)
@@ -209,7 +209,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         else:
             v = float('inf')
             for action in actions:
-                v = min(v, self.alpha_beta(gameState.getNextState(agentIndex, action), depth, 0, alpha, beta))
+                v = min(v, self.alphaBeta(gameState.getNextState(agentIndex, action), depth, 0, alpha, beta))
                 if v < alpha:
                     return v
                 beta = min(beta, v)
@@ -269,7 +269,23 @@ def betterEvaluationFunction(currentGameState):
     evaluation function (Part 4).
     """
     # TODO: Begin your code (Part 4)
-    raise NotImplementedError("To be implemented")
+    if currentGameState.isWin():
+        return float('inf')
+    if currentGameState.isLose():
+        return float('-inf')
+    pos = currentGameState.getPacmanPosition()
+    food = currentGameState.getFood()
+    capsules = currentGameState.getCapsules()
+    ghostStates = currentGameState.getGhostStates()
+    scaredTimes = [ghostState.scaredTimer for ghostState in ghostStates]
+    minGhostDistance = min([manhattanDistance(pos, state.getPosition()) for state in ghostStates])
+    nearestFoodDistance = min([manhattanDistance(pos, food) for food in food.asList()])
+    score = currentGameState.getScore()
+    if minGhostDistance <= 1:
+        return float('-inf')
+    if scaredTimes[0] > 0:
+        score += 10*scaredTimes[0]
+    return score + 5/(nearestFoodDistance+1) + 5/(minGhostDistance+1) - 5*len(food.asList()) - 2*len(capsules)
     # End your code (Part 4)
 
 # Abbreviation
