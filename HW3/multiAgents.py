@@ -137,8 +137,9 @@ class MinimaxAgent(MultiAgentSearchAgent):
         actions = gameState.getLegalActions(0) # get legal actions for pacman
         candidates = [] # list of (score, action) tuples
         for action in actions:
-            candidate = self.minimax(gameState.getNextState(0, action), self.depth-1, 1) 
+            candidate = self.minimax(gameState.getNextState(0, action), self.depth-1, 1)
             candidates.append((candidate, action))
+        print(candidates)
         return max(candidates)[1]
     
     def minimax(self, gameState, depth, agentIndex):
@@ -174,7 +175,45 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         Returns the minimax action using self.depth and self.evaluationFunction
         """
         # TODO: Begin your code (Part 2)
-        raise NotImplementedError("To be implemented")
+        actions = gameState.getLegalActions(0)
+        candidates = []
+        alpha = float('-inf')
+        beta = float('inf')
+        for action in actions:
+            candidate = self.alpha_beta(gameState.getNextState(0, action), self.depth-1, 1, alpha, beta)
+            candidates.append((candidate, action))
+            alpha = max(alpha, candidate)
+        print(candidates)
+        return max(candidates)[1]
+    
+    def alpha_beta(self, gameState, depth, agentIndex, alpha, beta):
+        if (depth == 0 and agentIndex == 0) or gameState.isWin() or gameState.isLose():
+            return self.evaluationFunction(gameState)
+        actions = gameState.getLegalActions(agentIndex)
+        if agentIndex == 0:
+            v = float('-inf')
+            for action in actions:
+                v = max(v, self.alpha_beta(gameState.getNextState(agentIndex, action), depth-1, 1, alpha, beta))
+                if v > beta:
+                    return v
+                alpha = max(alpha, v)
+            return v
+        elif agentIndex >= 1 and agentIndex < gameState.getNumAgents()-1:
+            v = float('inf')
+            for action in actions:
+                v = min(v, self.alpha_beta(gameState.getNextState(agentIndex, action), depth, agentIndex+1, alpha, beta))
+                if v < alpha:
+                    return v
+                beta = min(beta, v)
+            return v
+        else:
+            v = float('inf')
+            for action in actions:
+                v = min(v, self.alpha_beta(gameState.getNextState(agentIndex, action), depth, 0, alpha, beta))
+                if v < alpha:
+                    return v
+                beta = min(beta, v)
+            return v
         # End your code (Part 2)
 
 
