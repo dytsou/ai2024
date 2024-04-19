@@ -410,7 +410,7 @@ class GameStateData:
         """
         if other == None:
             return False
-        # TODO Check for type of other
+        # Check for type of other
         if not self.agentStates == other.agentStates:
             return False
         if not self.food == other.food:
@@ -617,7 +617,7 @@ class Game:
                         return
                 else:
                     agent.registerInitialState(self.state.deepCopy())
-                # TODO: could this exceed the total time
+                # could this exceed the total time
                 self.unmute()
 
         agentIndex = self.startingIndex

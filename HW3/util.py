@@ -613,7 +613,6 @@ def pause():
 
 # code to handle timeouts
 #
-# FIXME
 # NOTE: TimeoutFuncton is NOT reentrant.  Later timeouts will silently
 # disable earlier timeouts.  Could be solved by maintaining a global list
 # of active time outs.  Currently, questions which have test cases calling

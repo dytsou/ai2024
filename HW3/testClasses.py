@@ -35,7 +35,7 @@ class Question(object):
 class PassAllTestsQuestion(Question):
 
     def execute(self, grades):
-        # TODO: is this the right way to use grades?  The autograder doesn't seem to use it.
+        # is this the right way to use grades?  The autograder doesn't seem to use it.
         testsFailed = False
         grades.assignZeroCredit()
         for _, f in self.testCases:
@@ -53,7 +53,7 @@ class ExtraCreditPassAllTestsQuestion(Question):
         self.extraPoints = int(questionDict['extra_points'])
 
     def execute(self, grades):
-        # TODO: is this the right way to use grades?  The autograder doesn't seem to use it.
+        # is this the right way to use grades?  The autograder doesn't seem to use it.
         testsFailed = False
         grades.assignZeroCredit()
         for _, f in self.testCases:
@@ -70,7 +70,7 @@ class ExtraCreditPassAllTestsQuestion(Question):
 class HackedPartialCreditQuestion(Question):
 
     def execute(self, grades):
-        # TODO: is this the right way to use grades?  The autograder doesn't seem to use it.
+        # is this the right way to use grades?  The autograder doesn't seem to use it.
         grades.assignZeroCredit()
 
         points = 0
@@ -83,7 +83,7 @@ class HackedPartialCreditQuestion(Question):
             else:
                 passed = passed and testResult
 
-        # FIXME: Below terrible hack to match q3's logic
+        # Below terrible hack to match q3's logic
         if int(points) == self.maxPoints and not passed:
             grades.assignZeroCredit()
         else:
@@ -154,7 +154,7 @@ class TestCase(object):
     # Tests should call the following messages for grading
     # to ensure a uniform format for test output.
     #
-    # TODO: this is hairy, but we need to fix grading.py's interface
+    # this is hairy, but we need to fix grading.py's interface
     # to get a nice hierarchical project - question - test structure,
     # then these should be moved into Question proper.
     def testPass(self, grades):

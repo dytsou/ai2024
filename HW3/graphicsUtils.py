@@ -32,8 +32,7 @@ if _Windows:
     _canvas_tfonts = ['times new roman', 'lucida console']
 else:
     _canvas_tfonts = ['times', 'lucidasans-24']
-    pass  # XXX need defaults here
-
+    pass  
 
 def sleep(secs):
     global _root_window

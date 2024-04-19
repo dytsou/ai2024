@@ -85,7 +85,7 @@ def confirmGenerate():
             print('please answer either "yes" or "no"')
 
 
-# TODO: Fix this so that it tracebacks work correctly
+# Fix this so that it tracebacks work correctly
 # Looking at source of the traceback module, presuming it works
 # the same as the intepreters, it uses co_filename.  This is,
 # however, a readonly attribute.
@@ -102,7 +102,7 @@ def setModuleName(module, filename):
             setattr(o, '__file__', filename)
         elif type(o) == classType:
             setattr(o, '__file__', filename)
-            # TODO: assign member __file__'s?
+            # assign member __file__'s?
         # print i, type(o)
 
 
