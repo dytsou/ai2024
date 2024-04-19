@@ -133,8 +133,34 @@ class MinimaxAgent(MultiAgentSearchAgent):
         gameState.isLose():
         Returns whether or not the game state is a losing state
         """
-        # Begin your code (Part 1)
-        raise NotImplementedError("To be implemented")
+        # TODO: Begin your code (Part 1)
+        actions = gameState.getLegalActions(0) # get legal actions for pacman
+        candidates = [] # list of (score, action) tuples
+        for action in actions:
+            candidate = self.minimax(gameState.getNextState(0, action), self.depth-1, 1) 
+            candidates.append((candidate, action))
+        return max(candidates)[1]
+    
+    def minimax(self, gameState, depth, agentIndex):
+        if (depth == 0 and agentIndex == 0) or gameState.isWin() or gameState.isLose():
+            return self.evaluationFunction(gameState)
+        actions = gameState.getLegalActions(agentIndex)
+        candidates = []
+        if agentIndex == 0:
+            for action in actions:
+                candidate = self.minimax(gameState.getNextState(agentIndex, action), depth-1, 1)
+                candidates.append(candidate)
+            return max(candidates)
+        elif agentIndex >= 1 and agentIndex < gameState.getNumAgents()-1:
+            for action in actions:
+                candidate = self.minimax(gameState.getNextState(agentIndex, action), depth, agentIndex+1)
+                candidates.append(candidate)
+            return min(candidates)
+        else: # agentIndex == gameState.getNumAgents()-1
+            for action in actions:
+                candidate = self.minimax(gameState.getNextState(agentIndex, action), depth, 0)
+                candidates.append(candidate)
+            return min(candidates) 
         # End your code (Part 1)
 
 
@@ -147,7 +173,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         """
         Returns the minimax action using self.depth and self.evaluationFunction
         """
-        # Begin your code (Part 2)
+        # TODO: Begin your code (Part 2)
         raise NotImplementedError("To be implemented")
         # End your code (Part 2)
 
@@ -164,7 +190,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         All ghosts should be modeled as choosing uniformly at random from their
         legal moves.
         """
-        # Begin your code (Part 3)
+        # TODO: Begin your code (Part 3)
         raise NotImplementedError("To be implemented")
         # End your code (Part 3)
 
@@ -174,7 +200,7 @@ def betterEvaluationFunction(currentGameState):
     Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable
     evaluation function (Part 4).
     """
-    # Begin your code (Part 4)
+    # TODO: Begin your code (Part 4)
     raise NotImplementedError("To be implemented")
     # End your code (Part 4)
 
