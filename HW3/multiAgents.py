@@ -134,6 +134,9 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns whether or not the game state is a losing state
         """
         # TODO: Begin your code (Part 1)
+        """
+        First, we get the legal actions for pacman. Then, we iterate over all the actions and get the score for each action. If the agent is pacman, we get the maximum score, otherwise we get the minimum score. We return the action with the maximum score. When we reach the depth limit or the game is over, we return the evaluation function.
+        """
         actions = gameState.getLegalActions(0) # get legal actions for pacman
         candidates = [] # list of (score, action) tuples
         for action in actions:
@@ -175,6 +178,9 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         Returns the minimax action using self.depth and self.evaluationFunction
         """
         # TODO: Begin your code (Part 2)
+        """
+        First, we get the legal actions for pacman. Then, we iterate over all the actions and get the score for each action. If the agent is pacman, we get the maximum score, otherwise we get the minimum score. We return the action with the maximum score. When we reach the depth limit or the game is over, we return the evaluation function. We use alpha-beta pruning to reduce the number of nodes we need to explore.
+        """
         actions = gameState.getLegalActions(0)
         candidates = []
         alpha = float('-inf')
@@ -230,6 +236,9 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         legal moves.
         """
         # TODO: Begin your code (Part 3)
+        """
+        First, we get the legal actions for pacman. Then, we iterate over all the actions and get the score for each action. If the agent is pacman, we get the maximum score, otherwise we get the average score. We return the action with the maximum score. When we reach the depth limit or the game is over, we return the evaluation function. We use expectimax to model the ghosts as choosing uniformly at random from their legal moves.
+        """
         actions = gameState.getLegalActions(0)
         candidates = []
         for action in actions:
@@ -269,6 +278,15 @@ def betterEvaluationFunction(currentGameState):
     evaluation function (Part 4).
     """
     # TODO: Begin your code (Part 4)
+    """
+    We calculate the score based on the following factors:
+    1. If the game is won, return infinity, while if the game is lost, return negative infinity.
+    2. If the ghost is within 1 unit of pacman, return negative infinity to avoid getting caught.
+    3. If the ghost is scared, add 10 times the scared time to the score to encourage pacman to eat the ghost.
+    4. If the average distance to food is less, add 10 divided by the average distance to food to the score to encourage pacman to eat the food.
+    5. If the minimum distance to the ghost is less, add 20 divided by the minimum distance to the ghost to the score to avoid getting caught.
+    6. Subtract 5 times the number of food left and 10 times the number of capsules left to encourage pacman to eat the food and capsules.
+    """
     if currentGameState.isWin():
         return float('inf')
     if currentGameState.isLose():
@@ -285,7 +303,11 @@ def betterEvaluationFunction(currentGameState):
     if minGhostDistance <= 1:
         return float('-inf')
     score += 10*scaredTimes[0]
-    return 1*score + 10.0/(avgFoodDistance+1) + 20.0/(minGhostDistance+1) - 5*len(food.asList()) - 2*len(capsules)
+    score += 10.0/(avgFoodDistance+1)
+    score += 20.0/(minGhostDistance+1)
+    score -= 5*len(food.asList())
+    score -= 10*len(capsules)
+    return score
     # End your code (Part 4)
 
 # Abbreviation
