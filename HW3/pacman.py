@@ -368,7 +368,7 @@ class PacmanRules:
             state.data.food = state.data.food.copy()
             state.data.food[x][y] = False
             state.data._foodEaten = position
-            # TODO: cache numFood?
+            # Todo: cache numFood?
             numFood = state.getNumFood()
             if numFood == 0 and not state.data._lose:
                 state.data.scoreChange += 500
