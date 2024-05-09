@@ -38,7 +38,6 @@ class Agent():
             action: The action to be evaluated.
         """
         # Begin your code
-        # TODO
         if np.random.rand() > self.epsilon: 
             # Pick a new action for this state.
             return self.env.action_space.sample()
@@ -63,7 +62,6 @@ class Agent():
             None (Don't need to return anything)
         """
         # Begin your code
-        # TODO
         # Update the qtable
         next_max = max(self.qtable[next_state])
         new_q = (1 - self.learning_rate) * self.qtable[state, action] + self.learning_rate * (reward + self.gamma * next_max)
@@ -82,7 +80,6 @@ class Agent():
             max_q: the max Q value of given state
         """
         # Begin your code
-        # TODO
         max_q = np.max(self.qtable[state])
         return max_q 
         # End your code

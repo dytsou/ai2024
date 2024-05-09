@@ -53,8 +53,8 @@ class Agent():
             1. This can be done with a numpy function.
         """
         # Begin your code
-        # TODO
-        raise NotImplementedError("Not implemented yet.")
+        quantiles = np.linspace(lower_bound, upper_bound, num_bins + 1)[1:-1]
+        return quantiles
         # End your code
 
     def discretize_value(self, value, bins):
@@ -72,8 +72,7 @@ class Agent():
             1. This can be done with a numpy function.
         """
         # Begin your code
-        # TODO
-        raise NotImplementedError("Not implemented yet.")
+        return np.digitize(value, bins)
         # End your code
 
     def discretize_observation(self, observation):
@@ -93,8 +92,8 @@ class Agent():
             3. You might find something useful in Agent.__init__()
         """
         # Begin your code
-        # TODO
-        raise NotImplementedError("Not implemented yet.")
+        state = [self.discretize_value(observation[i], self.bins[i]) for i in range(4)]
+        return state
         # End your code
 
     def choose_action(self, state):
@@ -107,8 +106,11 @@ class Agent():
             action: The action to be evaluated.
         """
         # Begin your code
-        # TODO
-        raise NotImplementedError("Not implemented yet.")
+        if np.random.rand() > self.epsilon:
+            action = self.env.action_space.sample()
+        else:
+            action = np.argmax(self.qtable[tuple(state)])
+        return action
         # End your code
 
     def learn(self, state, action, reward, next_state, done):
@@ -124,8 +126,9 @@ class Agent():
             None (Don't need to return anything)
         """
         # Begin your code
-        # TODO
-        raise NotImplementedError("Not implemented yet.")
+        next_max = max(self.qtable[tuple(next_state)])
+        new_q = (1 - self.learning_rate) * self.qtable[tuple(state)][action] + self.learning_rate * (reward + self.gamma * next_max)
+        self.qtable[tuple(state)][action] = new_q
         # End your code
         np.save("./Tables/cartpole_table.npy", self.qtable)
 
@@ -141,8 +144,8 @@ class Agent():
             max_q: the max Q value of initial state(self.env.reset())
         """
         # Begin your code
-        # TODO
-        raise NotImplementedError("Not implemented yet.")
+        max_q = np.max(self.qtable[tuple(self.discretize_observation(self.env.reset()))])
+        return max_q
         # End your code
 
 
