@@ -38,13 +38,18 @@ class Agent():
             action: The action to be evaluated.
         """
         # Begin your code
+        """
+        If the random number is greater than epsilon, which is the exploration
+        rate, then the agent will explore the environment by taking a random
+        action. Otherwise, the agent will exploit the environment by taking the
+        best action based on the qtable.
+        """
         if np.random.rand() > self.epsilon: 
             # Pick a new action for this state.
             return self.env.action_space.sample()
         else:
             # Pick the best action for this state.
             return np.argmax(self.qtable[state]).item()
-
         # End your code
 
     def learn(self, state, action, reward, next_state, done):
@@ -62,9 +67,13 @@ class Agent():
             None (Don't need to return anything)
         """
         # Begin your code
-        # Update the qtable
+        """
+        The new q-value is calculated using the Bellman equation by taking the old q-value and adding the learning rate times
+        the reward and the discounted max q-value of the next state.
+        """
         next_max = max(self.qtable[next_state])
-        new_q = (1 - self.learning_rate) * self.qtable[state, action] + self.learning_rate * (reward + self.gamma * next_max)
+        new_q = (1 - self.learning_rate) * self.qtable[state, action] + \
+                self.learning_rate * (reward + self.gamma * next_max)
         self.qtable[state, action] = new_q
         # End your code
         np.save("./Tables/taxi_table.npy", self.qtable)
@@ -80,6 +89,10 @@ class Agent():
             max_q: the max Q value of given state
         """
         # Begin your code
+        """
+        The max q-value of a state is the maximum q-value of all the actions
+        that can be taken from that state.
+        """
         max_q = np.max(self.qtable[state])
         return max_q 
         # End your code

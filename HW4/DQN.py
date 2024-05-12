@@ -131,6 +131,13 @@ class Agent():
             self.target_net.load_state_dict(self.evaluate_net.state_dict())
 
         # Begin your code
+        """
+        First, we sample a batch of data from the replay buffer. Second, we
+        forward the data to the evaluate net and the target net. Third, we
+        compute the loss with MSE. Fourth, we zero-out the gradients. Fifth, we
+        backpropagate. Finally, we optimize the loss function and save the target
+        net.
+        """
         observations, actions, rewards, next_observations, dones = self.buffer.sample(self.batch_size)
         observations = torch.FloatTensor(np.array(observations))
         actions = torch.LongTensor(actions)
@@ -162,6 +169,12 @@ class Agent():
         """
         with torch.no_grad():
             # Begin your code
+            """
+            If the random number is greater than epsilon, which is the exploration
+            rate, then the agent will explore the environment by taking a random
+            action. Otherwise, the agent will exploit the environment by taking the
+            best action based on the qtable.
+            """
             if np.random.rand() > self.epsilon:
                 action = self.env.action_space.sample()
             else:
@@ -182,6 +195,9 @@ class Agent():
             action: the chosen action.
         """
         # Begin your code
+        """
+        The max_q variable is the maximum q-value of the target net.
+        """
         max_q = torch.max(self.target_net(torch.FloatTensor(self.env.reset())))
         return max_q
         # End your code
