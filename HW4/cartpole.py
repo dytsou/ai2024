@@ -53,8 +53,13 @@ class Agent():
             1. This can be done with a numpy function.
         """
         # Begin your code
-        # TODO
-        raise NotImplementedError("Not implemented yet.")
+        """
+        Using the linspace function from numpy to create an array of evenly 
+        spaced numbers over a specified interval, we can then slice the array 
+        to remove the lower and upper bounds.
+        """
+        quantiles = np.linspace(lower_bound, upper_bound, num_bins + 1)[1:-1]
+        return quantiles
         # End your code
 
     def discretize_value(self, value, bins):
@@ -72,8 +77,11 @@ class Agent():
             1. This can be done with a numpy function.
         """
         # Begin your code
-        # TODO
-        raise NotImplementedError("Not implemented yet.")
+        """
+        Returns the index of the bin that the value falls into. The bins are
+        defined by the quantiles in the bins array.
+        """
+        return np.digitize(value, bins)
         # End your code
 
     def discretize_observation(self, observation):
@@ -93,8 +101,12 @@ class Agent():
             3. You might find something useful in Agent.__init__()
         """
         # Begin your code
-        # TODO
-        raise NotImplementedError("Not implemented yet.")
+        """
+        Discretizes the observation by calling the discretize_value function on
+        each of the four features in the observation.
+        """
+        state = [self.discretize_value(observation[i], self.bins[i]) for i in range(4)]
+        return state
         # End your code
 
     def choose_action(self, state):
@@ -107,8 +119,17 @@ class Agent():
             action: The action to be evaluated.
         """
         # Begin your code
-        # TODO
-        raise NotImplementedError("Not implemented yet.")
+        """
+        If the random number is greater than epsilon, which is the exploration
+        rate, then the agent will explore the environment by taking a random
+        action. Otherwise, the agent will exploit the environment by taking the
+        best action based on the qtable.
+        """
+        if np.random.rand() > self.epsilon:
+            action = self.env.action_space.sample()
+        else:
+            action = np.argmax(self.qtable[tuple(state)])
+        return action
         # End your code
 
     def learn(self, state, action, reward, next_state, done):
@@ -124,8 +145,15 @@ class Agent():
             None (Don't need to return anything)
         """
         # Begin your code
-        # TODO
-        raise NotImplementedError("Not implemented yet.")
+        """
+        The next_max variable is the maximum q-value of the next state. The new_q
+        variable is the new q-value of the current state and action and is
+        used to update the qtable.
+        """
+        next_max = max(self.qtable[tuple(next_state)])
+        new_q = (1 - self.learning_rate) * self.qtable[tuple(state)][action] +\
+                self.learning_rate * (reward + self.gamma * next_max)
+        self.qtable[tuple(state)][action] = new_q
         # End your code
         np.save("./Tables/cartpole_table.npy", self.qtable)
 
@@ -141,8 +169,12 @@ class Agent():
             max_q: the max Q value of initial state(self.env.reset())
         """
         # Begin your code
-        # TODO
-        raise NotImplementedError("Not implemented yet.")
+        """
+        The max_q variable is the maximum q-value of the initial state, which is
+        the maximum q-value of all the actions.
+        """
+        max_q = np.max(self.qtable[tuple(self.discretize_observation(self.env.reset()))])
+        return max_q
         # End your code
 
 
