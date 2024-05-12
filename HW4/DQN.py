@@ -131,8 +131,20 @@ class Agent():
             self.target_net.load_state_dict(self.evaluate_net.state_dict())
 
         # Begin your code
-        # TODO
-        raise NotImplementedError("Not implemented yet.")
+        observations, actions, rewards, next_observations, dones = self.buffer.sample(self.batch_size)
+        observations = torch.FloatTensor(np.array(observations))
+        actions = torch.LongTensor(actions)
+        rewards = torch.FloatTensor(rewards)
+        next_observations = torch.FloatTensor(np.array(next_observations))
+        dones = torch.FloatTensor(dones)
+        
+        evaluate = self.evaluate_net(observations).gather(1, actions.reshape(self.batch_size, 1))
+        target = rewards.reshape(self.batch_size, 1) + self.gamma * self.target_net(next_observations).detach().max(1)[0].view(self.batch_size, 1) * (1 - dones).reshape(self.batch_size, 1)
+        loss = F.mse_loss(evaluate, target)
+        
+        self.optimizer.zero_grad()
+        loss.backward()
+        self.optimizer.step()
         # End your code
         torch.save(self.target_net.state_dict(), "./Tables/DQN.pt")
 
@@ -150,25 +162,28 @@ class Agent():
         """
         with torch.no_grad():
             # Begin your code
-            # TODO
-            raise NotImplementedError("Not implemented yet.")
+            if np.random.rand() > self.epsilon:
+                action = self.env.action_space.sample()
+            else:
+                action = torch.argmax(self.evaluate_net.forward(torch.FloatTensor(state))).item()
             # End your code
         return action
 
     def check_max_Q(self):
         """
-        - Implement the function calculating the max Q value of initial state(self.env.reset()).
-        - Check the max Q value of initial state        
-        Parameter:
+        - Implement the action-choosing function.
+        - Choose the best action with given state and epsilon
+        Parameters:
             self: the agent itself.
+            state: the current state of the enviornment.
             (Don't pass additional parameters to the function.)
             (All you need have been initialized in the constructor.)
-        Return:
-            max_q: the max Q value of initial state(self.env.reset())
+        Returns:
+            action: the chosen action.
         """
         # Begin your code
-        # TODO
-        raise NotImplementedError("Not implemented yet.")
+        max_q = torch.max(self.target_net(torch.FloatTensor(self.env.reset())))
+        return max_q
         # End your code
 
 
@@ -219,7 +234,7 @@ def test(env):
         count = 0
         while True:
             # env.render() #Uncomment for visualizing the process
-            count += 1
+            count += 5
             Q = testing_agent.target_net.forward(
                 torch.FloatTensor(state)).squeeze(0).detach()
             action = int(torch.argmax(Q).numpy())
