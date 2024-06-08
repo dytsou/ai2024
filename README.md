@@ -9,3 +9,6 @@ Use Minimax, Alpha-Beta Pruning, Expectimax algorithm and evaluation function to
 
 ## HW4 Reinforcement Learning
 Use Q-learning algorithm to implement Taxi-v3 game, CartPole-v0 game and use DQN algorithm to implement CartPole-v0 game. Compare the performance of Q-learning and DQN algorithm.
+
+## HW5 Improve LLM Prompt
+Design a task for the LLM model and improve the model's performance.
